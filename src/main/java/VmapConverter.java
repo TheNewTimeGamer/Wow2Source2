@@ -16,7 +16,7 @@ public class VmapConverter {
         ..\..\world\wmo\dungeon\md_caveden\md_mushroomden_set0.obj;11234.62109375;5.478230953216553;21381.78515625;0;50.5;0;0;1;6784782;wmo;110497
      */
 
-    public static final String CWORLD_CHILDREN = "$CMAPWORLD_CHILDREN";
+    public static final String CMAP_WORLD_CHILDREN = "$CMAP_WORLD_CHILDREN";
 
     public static final String CMAP_ENTITY_ORIGIN_X = "$ORIGIN_X";
     public static final String CMAP_ENTITY_ORIGIN_Y = "$ORIGIN_Y";
@@ -35,14 +35,16 @@ public class VmapConverter {
 
     public static boolean create(CMapEntity[] entities) {
         String vmapTemplate = new String(FileUtil.readFully(new File("templates/vmap.template")));
-        vmapTemplate = vmapTemplate.replace(CWORLD_CHILDREN, buildEntities(entities));
+        vmapTemplate = vmapTemplate.replace(CMAP_WORLD_CHILDREN, buildEntities(entities));
         return FileUtil.writeFully(new File("out.vmap"), vmapTemplate.getBytes());
     }
 
     private static String buildEntities(CMapEntity[] entities) {
-        String vmapChildTemplate = new String(FileUtil.readFully(new File("templates/vmap_child.template")));
+        String vmapChildTemplate = new String(FileUtil.readFully(new File("templates/vamp_child.template")));
         StringBuilder builder = new StringBuilder();
         for(CMapEntity entity : entities){
+            if(entity == null){continue;}
+            System.out.println("Entity: " + entity.className + " " + entity.vmdlModel);
             String rawEntity = vmapChildTemplate.replace(CMAP_ENTITY_ORIGIN_X, ""+entity.xPosition);
             rawEntity = rawEntity.replace(CMAP_ENTITY_ORIGIN_Y, ""+entity.yPosition);
             rawEntity = rawEntity.replace(CMAP_ENTITY_ORIGIN_Z, ""+entity.zPosition);
@@ -58,8 +60,9 @@ public class VmapConverter {
             rawEntity = rawEntity.replace(CMAP_ENTITY_CLASS_NAME, ""+entity.className);
             rawEntity = rawEntity.replace(CMAP_ENTITY_VMDL_MODEL, ""+entity.vmdlModel);
             builder.append(rawEntity);
+            builder.append(",");
         }
-        return builder.toString();
+        return builder.substring(0, builder.length()-1);
     }
 
 }

@@ -3525,7 +3525,220 @@
 		"referenceID" "uint64" "0x0"
 		"children" "element_array" 
 		[
-            $CMAP_WORLD_CHILDREN
+            "CMapEntity"
+			{
+				"id" "elementid" "3b20cf02-09a1-4b2a-a777-b7dcef78575d"
+				"origin" "vector3" "0.0 0.0 0.0"
+				"angles" "qangle" "0.0 0.0 0.0"
+				"scales" "vector3" "1.0 1.0 1.0"
+				"nodeID" "int" "3"
+				"referenceID" "uint64" "0x3d5ae78368be2096"
+				"children" "element_array" 
+				[
+				]
+				"editorOnly" "bool" "0"
+				"force_hidden" "bool" "0"
+				"transformLocked" "bool" "0"
+				"variableTargetKeys" "string_array" 
+				[
+				]
+				"variableNames" "string_array" 
+				[
+				]
+				"relayPlugData" "DmePlugList"
+				{
+					"id" "elementid" "29771acb-7de2-4d12-8ba5-cf50080f6d9c"
+					"names" "string_array" 
+					[
+					]
+					"dataTypes" "int_array" 
+					[
+					]
+					"plugTypes" "int_array" 
+					[
+					]
+					"descriptions" "string_array" 
+					[
+					]
+				}
+				
+				"connectionsData" "element_array" 
+				[
+				]
+				"entity_properties" "EditGameClassProps"
+				{
+					"id" "elementid" "9cf90e7c-a04e-49b1-b228-2a85e303bc63"
+					"classname" "string" "prop_static"
+					"model" "string" "models/7fk_darkmoon_forsakendrumset01.vmdl"
+					"solid" "string" "6"
+					"disableshadows" "string" "0"
+					"screenspacefade" "string" "0"
+					"skin" "string" "default"
+					"lodlevel" "string" "-1"
+					"fademindist" "string" "-1"
+					"fademaxdist" "string" "0"
+					"fadescale" "string" "1"
+					"detailgeometry" "string" "0"
+					"visoccluder" "string" "0"
+					"baketoworld" "string" "0"
+					"renderamt" "string" "255"
+					"rendercolor" "string" "255 255 255"
+					"lightingorigin" "string" ""
+					"lightgroup" "string" ""
+					"rendertocubemaps" "string" "1"
+					"precomputelightprobes" "string" "1"
+					"materialoverride" "string" ""
+					"disableinlowquality" "string" "0"
+					"lightmapscalebias" "string" "0"
+					"bakelighting" "string" "-1"
+					"renderwithdynamic" "string" "0"
+				}
+				
+				"hitNormal" "vector3" "0 0 1"
+				"isProceduralEntity" "bool" "0"
+			},"CMapEntity"
+			{
+				"id" "elementid" "3b20cf02-09a1-4b2a-a777-b7dcef78575d"
+				"origin" "vector3" "64.0 0.0 0.0"
+				"angles" "qangle" "0.0 0.0 0.0"
+				"scales" "vector3" "1.0 1.0 1.0"
+				"nodeID" "int" "3"
+				"referenceID" "uint64" "0x3d5ae78368be2096"
+				"children" "element_array" 
+				[
+				]
+				"editorOnly" "bool" "0"
+				"force_hidden" "bool" "0"
+				"transformLocked" "bool" "0"
+				"variableTargetKeys" "string_array" 
+				[
+				]
+				"variableNames" "string_array" 
+				[
+				]
+				"relayPlugData" "DmePlugList"
+				{
+					"id" "elementid" "29771acb-7de2-4d12-8ba5-cf50080f6d9c"
+					"names" "string_array" 
+					[
+					]
+					"dataTypes" "int_array" 
+					[
+					]
+					"plugTypes" "int_array" 
+					[
+					]
+					"descriptions" "string_array" 
+					[
+					]
+				}
+				
+				"connectionsData" "element_array" 
+				[
+				]
+				"entity_properties" "EditGameClassProps"
+				{
+					"id" "elementid" "9cf90e7c-a04e-49b1-b228-2a85e303bc63"
+					"classname" "string" "prop_static"
+					"model" "string" "models/7fk_darkmoon_forsakendrumset01.vmdl"
+					"solid" "string" "6"
+					"disableshadows" "string" "0"
+					"screenspacefade" "string" "0"
+					"skin" "string" "default"
+					"lodlevel" "string" "-1"
+					"fademindist" "string" "-1"
+					"fademaxdist" "string" "0"
+					"fadescale" "string" "1"
+					"detailgeometry" "string" "0"
+					"visoccluder" "string" "0"
+					"baketoworld" "string" "0"
+					"renderamt" "string" "255"
+					"rendercolor" "string" "255 255 255"
+					"lightingorigin" "string" ""
+					"lightgroup" "string" ""
+					"rendertocubemaps" "string" "1"
+					"precomputelightprobes" "string" "1"
+					"materialoverride" "string" ""
+					"disableinlowquality" "string" "0"
+					"lightmapscalebias" "string" "0"
+					"bakelighting" "string" "-1"
+					"renderwithdynamic" "string" "0"
+				}
+				
+				"hitNormal" "vector3" "0 0 1"
+				"isProceduralEntity" "bool" "0"
+			},"CMapEntity"
+			{
+				"id" "elementid" "3b20cf02-09a1-4b2a-a777-b7dcef78575d"
+				"origin" "vector3" "128.0 0.0 0.0"
+				"angles" "qangle" "0.0 0.0 0.0"
+				"scales" "vector3" "1.0 1.0 1.0"
+				"nodeID" "int" "3"
+				"referenceID" "uint64" "0x3d5ae78368be2096"
+				"children" "element_array" 
+				[
+				]
+				"editorOnly" "bool" "0"
+				"force_hidden" "bool" "0"
+				"transformLocked" "bool" "0"
+				"variableTargetKeys" "string_array" 
+				[
+				]
+				"variableNames" "string_array" 
+				[
+				]
+				"relayPlugData" "DmePlugList"
+				{
+					"id" "elementid" "29771acb-7de2-4d12-8ba5-cf50080f6d9c"
+					"names" "string_array" 
+					[
+					]
+					"dataTypes" "int_array" 
+					[
+					]
+					"plugTypes" "int_array" 
+					[
+					]
+					"descriptions" "string_array" 
+					[
+					]
+				}
+				
+				"connectionsData" "element_array" 
+				[
+				]
+				"entity_properties" "EditGameClassProps"
+				{
+					"id" "elementid" "9cf90e7c-a04e-49b1-b228-2a85e303bc63"
+					"classname" "string" "prop_static"
+					"model" "string" "models/7fk_darkmoon_forsakendrumset01.vmdl"
+					"solid" "string" "6"
+					"disableshadows" "string" "0"
+					"screenspacefade" "string" "0"
+					"skin" "string" "default"
+					"lodlevel" "string" "-1"
+					"fademindist" "string" "-1"
+					"fademaxdist" "string" "0"
+					"fadescale" "string" "1"
+					"detailgeometry" "string" "0"
+					"visoccluder" "string" "0"
+					"baketoworld" "string" "0"
+					"renderamt" "string" "255"
+					"rendercolor" "string" "255 255 255"
+					"lightingorigin" "string" ""
+					"lightgroup" "string" ""
+					"rendertocubemaps" "string" "1"
+					"precomputelightprobes" "string" "1"
+					"materialoverride" "string" ""
+					"disableinlowquality" "string" "0"
+					"lightmapscalebias" "string" "0"
+					"bakelighting" "string" "-1"
+					"renderwithdynamic" "string" "0"
+				}
+				
+				"hitNormal" "vector3" "0 0 1"
+				"isProceduralEntity" "bool" "0"
+			}
 		]
 		"editorOnly" "bool" "0"
 		"force_hidden" "bool" "0"

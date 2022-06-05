@@ -12,6 +12,20 @@ public class Wow2Source2 {
     public static ArrayList<File> fileIndex = new ArrayList<File>();
 
     public static void main(String[] args) {
+        buildVmap();
+    }
+
+    public static void buildVmap() {
+        System.out.println("Building Vmap..");
+        CMapEntity[] entities = new CMapEntity[3];
+        entities[0] = new CMapEntity(0,0,0,0,0,0,1,1,1,"prop_static","models/7fk_darkmoon_forsakendrumset01.vmdl");
+        entities[1] = new CMapEntity(64,0,0,0,0,0,1,1,1,"prop_static","models/7fk_darkmoon_forsakendrumset01.vmdl");
+        entities[2] = new CMapEntity(128,0,0,0,0,0,1,1,1,"prop_static","models/7fk_darkmoon_forsakendrumset01.vmdl");
+        VmapConverter.create(entities);
+        System.out.println("Done!");
+    }
+
+    public static void buildProject() {
         String[] parts = Source2ProjectRoot.split("/");
         Source2ProjectName = parts[parts.length-1];
         System.out.println("Source2 Project Name: " + Source2ProjectName);
@@ -37,7 +51,6 @@ public class Wow2Source2 {
                     break;
             }
         }
-
     }
 
 }
