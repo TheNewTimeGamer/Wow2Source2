@@ -5,15 +5,18 @@ public class VmdlConverter {
 
     public static final String MESH_FILENAME = "$MESH_FILENAME";
 
-    public static boolean convert(String path){
-        return convert(new File(path));
+    public static boolean convert(String path, boolean mapOverride){
+        return convert(new File(path), mapOverride);
     }
 
-    public static boolean convert(File file) {
+    public static boolean convert(File file, boolean mapOverride) {
         String filePath = file.getAbsolutePath().split(Wow2Source2.Source2ProjectName)[1].replace("\\", "/");
         if(filePath.contains("/maps/")){
-            System.out.print("map file -> use import .. ");
-            return false;
+            if(!mapOverride){
+                System.out.print("map file -> use import .. ");
+                return false;
+            }
+            System.out.print("map file -> override active .. ");
         }
         filePath = filePath.substring(1);
         String template = new String(FileUtil.readFully("templates/vmdl.template"));
