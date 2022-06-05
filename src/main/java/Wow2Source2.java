@@ -33,7 +33,7 @@ public class Wow2Source2 {
                     System.out.print("Converting to vmdl: " + file.getName() + " .. ");
                     System.out.println(VmdlConverter.convert(file) ? "Success!" : "Failed!");
                     System.out.print("Patching obj file.. " + file.getName() + " .. ");
-                    System.out.println(VmdlConverter.objPatch(file) ? "Success!" : "Failed!");
+                    System.out.println(VmdlConverter.objPatch(file) ? "Success!" : "Skipped!");
                     break;
             }
         }
