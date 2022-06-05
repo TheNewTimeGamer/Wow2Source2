@@ -1,0 +1,8 @@
+1. Set root of wow export's export directory.
+2. Set root of source 2 project.
+
+3. Wow export. Export all you want.
+
+4. All exported files should be moved to the source 2 project's wowresources directory.
+5. png files should be converted into .vmat files and placed in materials directory of the source 2 project.
+6.
