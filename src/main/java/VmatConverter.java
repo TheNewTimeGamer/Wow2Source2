@@ -1,6 +1,8 @@
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 
+// Vmat essentially replaces mtl.
+
 public class VmatConverter {
 
     public static final String TEXTURE_COLOR_VALUE = "$TEXTURE_COLOR_VALUE";

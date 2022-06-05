@@ -24,9 +24,18 @@ public class VmdlConverter {
     public static boolean objPatch(File file) {
         String raw = new String(FileUtil.readFully(file));
         if(raw.contains("usemtl materials/")){
-            return false;
+            if(raw.contains("usemtl materials/mat_")){
+                return false;
+            }
+            raw = raw.replace("usemtl materials/", "usemtl materials/mat_");
+            System.out.print("partial patch .. ");
+            return FileUtil.writeFully(file, raw.getBytes());
         }
-        raw = raw.replace("usemtl ", "usemtl materials/");
+        if(raw.contains("usemtl mat_")){
+            raw = raw.replace("usemtl ", "usemtl materials/");
+        }else{
+            raw = raw.replace("usemtl ", "usemtl materials/mat_");
+        }
         return FileUtil.writeFully(file, raw.getBytes());
     }
 
