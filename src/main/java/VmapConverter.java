@@ -1,3 +1,6 @@
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+
 public class VmapConverter {
 
     // To-Do: Figure out exact scaling values for imports
@@ -12,5 +15,51 @@ public class VmapConverter {
         ..\..\world\wmo\dungeon\md_shipwreck\shipwreck_d_set0.obj;11255.1181640625;-35.53384017944336;21599.619140625;-4.946645736694336;208;21.16083526611328;0;1;6620771;wmo;111520
         ..\..\world\wmo\dungeon\md_caveden\md_mushroomden_set0.obj;11234.62109375;5.478230953216553;21381.78515625;0;50.5;0;0;1;6784782;wmo;110497
      */
+
+    public static final String CWORLD_CHILDREN = "$CMAPWORLD_CHILDREN";
+
+    public static final String CMAP_ENTITY_ORIGIN_X = "$ORIGIN_X";
+    public static final String CMAP_ENTITY_ORIGIN_Y = "$ORIGIN_Y";
+    public static final String CMAP_ENTITY_ORIGIN_Z = "$ORIGIN_Z";
+
+    public static final String CMAP_ENTITY_ANGLE_X = "$ANGLE_X";
+    public static final String CMAP_ENTITY_ANGLE_Y = "$ANGLE_Y";
+    public static final String CMAP_ENTITY_ANGLE_Z = "$ANGLE_Z";
+
+    public static final String CMAP_ENTITY_SCALE_X = "$SCALE_X";
+    public static final String CMAP_ENTITY_SCALE_Y = "$SCALE_Y";
+    public static final String CMAP_ENTITY_SCALE_Z = "$SCALE_Z";
+
+    public static final String CMAP_ENTITY_CLASS_NAME = "$CLASS_NAME";
+    public static final String CMAP_ENTITY_VMDL_MODEL = "$VMDL_MODEL";
+
+    public static boolean create(CMapEntity[] entities) {
+        String vmapTemplate = new String(FileUtil.readFully(new File("templates/vmap.template")));
+        vmapTemplate = vmapTemplate.replace(CWORLD_CHILDREN, buildEntities(entities));
+        return FileUtil.writeFully(new File("out.vmap"), vmapTemplate.getBytes());
+    }
+
+    private static String buildEntities(CMapEntity[] entities) {
+        String vmapChildTemplate = new String(FileUtil.readFully(new File("templates/vmap_child.template")));
+        StringBuilder builder = new StringBuilder();
+        for(CMapEntity entity : entities){
+            String rawEntity = vmapChildTemplate.replace(CMAP_ENTITY_ORIGIN_X, ""+entity.xPosition);
+            rawEntity = rawEntity.replace(CMAP_ENTITY_ORIGIN_Y, ""+entity.yPosition);
+            rawEntity = rawEntity.replace(CMAP_ENTITY_ORIGIN_Z, ""+entity.zPosition);
+
+            rawEntity = rawEntity.replace(CMAP_ENTITY_ANGLE_X, ""+entity.xAngle);
+            rawEntity = rawEntity.replace(CMAP_ENTITY_ANGLE_Y, ""+entity.yAngle);
+            rawEntity = rawEntity.replace(CMAP_ENTITY_ANGLE_Z, ""+entity.zAngle);
+
+            rawEntity = rawEntity.replace(CMAP_ENTITY_SCALE_X, ""+entity.xScale);
+            rawEntity = rawEntity.replace(CMAP_ENTITY_SCALE_Y, ""+entity.yScale);
+            rawEntity = rawEntity.replace(CMAP_ENTITY_SCALE_Z, ""+entity.zScale);
+
+            rawEntity = rawEntity.replace(CMAP_ENTITY_CLASS_NAME, ""+entity.className);
+            rawEntity = rawEntity.replace(CMAP_ENTITY_VMDL_MODEL, ""+entity.vmdlModel);
+            builder.append(rawEntity);
+        }
+        return builder.toString();
+    }
 
 }
