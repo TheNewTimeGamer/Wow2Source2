@@ -51,6 +51,9 @@ public class Wow2Source2 {
                     break;
             }
         }
+
+        addMapTiles(entityBuffer, new File(""));
+
         CMapEntity[] entities = entityBuffer.toArray(new CMapEntity[0]);
         System.out.println("Processing entities " + entities.length + ": ");
         for(CMapEntity entity : entities) {
@@ -62,6 +65,10 @@ public class Wow2Source2 {
         }else{
             System.out.println("Failed!");
         }
+    }
+
+    public static void addMapTiles(ArrayList<CMapEntity> entityBuffer, File mapRoot) {
+
     }
 
 }

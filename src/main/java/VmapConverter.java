@@ -41,7 +41,7 @@ public class VmapConverter {
     }
 
     private static String buildEntities(CMapEntity[] entities) {
-        String vmapChildTemplate = new String(FileUtil.readFully(new File("templates/vamp_child.template")));
+        String vmapChildTemplate = new String(FileUtil.readFully(new File("templates/vmap_child.template")));
         StringBuilder builder = new StringBuilder();
         for(CMapEntity entity : entities){
             if(entity == null){continue;}
