@@ -8,6 +8,7 @@
 				"referenceID" "uint64" "0x3d5ae78368be2096"
 				"children" "element_array" 
 				[
+				    $VMAP_CHILDREN
 				]
 				"editorOnly" "bool" "0"
 				"force_hidden" "bool" "0"

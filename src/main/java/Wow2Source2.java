@@ -8,6 +8,7 @@ public class Wow2Source2 {
 
     public static String WowResourcesRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/limit_break/wowresources";
     public static String Source2ProjectRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/limit_break";
+    public static String MapRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/limit_break/models/maps/darkmoonfaire";
 
     public static String Source2ProjectName;
 
@@ -52,7 +53,9 @@ public class Wow2Source2 {
             }
         }
 
-        addMapTiles(entityBuffer, new File(""));
+        System.out.println("Adding map tiles from " + MapRoot + ":");
+        addMapTiles(entityBuffer, new File(MapRoot));
+        System.out.println("Done!");
 
         CMapEntity[] entities = entityBuffer.toArray(new CMapEntity[0]);
         System.out.println("Processing entities " + entities.length + ": ");
@@ -68,7 +71,16 @@ public class Wow2Source2 {
     }
 
     public static void addMapTiles(ArrayList<CMapEntity> entityBuffer, File mapRoot) {
-
+        File[] files = mapRoot.listFiles();
+        for(int i = 0; i < files.length; i++){
+            if(files[i] == null || !files[i].isFile()) {
+                continue;
+            }
+            String path = mapRoot.getPath() + "/" + files[i].getName();
+            path = path.split(Source2ProjectName)[1].replace("\\", "/").substring(1);
+            System.out.println(" - " + path);
+            entityBuffer.add(new CMapEntity(0,0,0,0,0,0,1,1,1,"prop_static",path,null));
+        }
     }
 
 }

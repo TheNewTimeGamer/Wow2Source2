@@ -19,6 +19,8 @@ public class VmapConverter {
 
     public static final String CMAP_WORLD_CHILDREN = "$CMAP_WORLD_CHILDREN";
 
+    public static final String CMAP_ENTITY_CHILDREN = "$VMAP_CHILDREN";
+
     public static final String CMAP_ENTITY_ORIGIN_X = "$ORIGIN_X";
     public static final String CMAP_ENTITY_ORIGIN_Y = "$ORIGIN_Y";
     public static final String CMAP_ENTITY_ORIGIN_Z = "$ORIGIN_Z";
@@ -45,21 +47,7 @@ public class VmapConverter {
         StringBuilder builder = new StringBuilder();
         for(CMapEntity entity : entities){
             if(entity == null){continue;}
-            String rawEntity = vmapChildTemplate.replace(CMAP_ENTITY_ORIGIN_X, ""+entity.xPosition);
-            rawEntity = rawEntity.replace(CMAP_ENTITY_ORIGIN_Y, ""+entity.yPosition);
-            rawEntity = rawEntity.replace(CMAP_ENTITY_ORIGIN_Z, ""+entity.zPosition);
-
-            rawEntity = rawEntity.replace(CMAP_ENTITY_ANGLE_X, ""+entity.xAngle);
-            rawEntity = rawEntity.replace(CMAP_ENTITY_ANGLE_Y, ""+entity.yAngle);
-            rawEntity = rawEntity.replace(CMAP_ENTITY_ANGLE_Z, ""+entity.zAngle);
-
-            rawEntity = rawEntity.replace(CMAP_ENTITY_SCALE_X, ""+entity.xScale);
-            rawEntity = rawEntity.replace(CMAP_ENTITY_SCALE_Y, ""+entity.yScale);
-            rawEntity = rawEntity.replace(CMAP_ENTITY_SCALE_Z, ""+entity.zScale);
-
-            rawEntity = rawEntity.replace(CMAP_ENTITY_CLASS_NAME, ""+entity.className);
-            rawEntity = rawEntity.replace(CMAP_ENTITY_VMDL_MODEL, ""+entity.vmdlModel);
-            builder.append(rawEntity);
+            builder.append(entity.toString(vmapChildTemplate));
             builder.append(",");
         }
         return builder.substring(0, builder.length()-1);
@@ -83,7 +71,7 @@ public class VmapConverter {
             double zRot = Double.parseDouble(parts[6]);
             double scale = Double.parseDouble(parts[8]);
             parts = parts[0].split(Pattern.quote("\\"));
-            entities[i] = new CMapEntity(xPos,yPos,zPos,xRot,yRot,zRot,scale,scale,scale,"prop_static","models/"+parts[parts.length-1].split("\\.")[0] + ".vmdl");
+            entities[i] = new CMapEntity(xPos,yPos,zPos,xRot,yRot,zRot,scale,scale,scale,"prop_static","models/"+parts[parts.length-1].split("\\.")[0] + ".vmdl",null);
         }
         return entities;
     }
