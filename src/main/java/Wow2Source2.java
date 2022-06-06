@@ -2,6 +2,7 @@ import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class Wow2Source2 {
@@ -27,6 +28,7 @@ public class Wow2Source2 {
         System.out.println(FileUtil.buildIndex(fileIndex, WowResourcesRoot) + " entries.");
 
         ArrayList<CMapEntity> entityBuffer = new ArrayList<CMapEntity>();
+        HashMap<String, CMapEntity[]> relations = new HashMap<String, CMapEntity[]>();
 
         for(File file : fileIndex) {
             final String fileExtension = file.getName().split("\\.")[1].toLowerCase();
@@ -45,10 +47,9 @@ public class Wow2Source2 {
                     System.out.println(VmdlConverter.objPatch(file) ? "Success!" : "Skipped!");
                     break;
                 case "csv":
-                    System.out.print("Processing csv: " + file.getName() + " .. ");
-                    CMapEntity[] lEntities = VmapConverter.processCsv(file);
-                    entityBuffer.addAll(Arrays.stream(lEntities).toList());
-                    System.out.println(lEntities.length + " entities found.");
+                    System.out.println("Processing csv: " + file.getName() + " .. ");
+                    VmapConverter.processCsv(relations, file);
+                    System.out.println(relations.size() + " entity relations found.");
                     break;
             }
         }
@@ -63,7 +64,7 @@ public class Wow2Source2 {
             if(entity == null){continue;}
             System.out.println(" - " + entity.className + " " + entity.vmdlModel);
         }
-        if(VmapConverter.create(entities)){
+        if(VmapConverter.create(entities, relations)){
             System.out.println("Done!");
         }else{
             System.out.println("Failed!");

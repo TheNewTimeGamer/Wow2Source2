@@ -7,7 +7,7 @@ public class CMapEntity {
     public final String className;
     public final String vmdlModel;
 
-    public final CMapEntity[] children;
+    public CMapEntity[] children;
 
     public CMapEntity(  double xPosition, double yPosition, double zPosition,
                         double xAngle,    double yAngle,    double zAngle,

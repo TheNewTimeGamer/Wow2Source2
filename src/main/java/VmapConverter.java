@@ -1,5 +1,6 @@
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 public class VmapConverter {
@@ -36,17 +37,27 @@ public class VmapConverter {
     public static final String CMAP_ENTITY_CLASS_NAME = "$CLASS_NAME";
     public static final String CMAP_ENTITY_VMDL_MODEL = "$VMDL_MODEL";
 
-    public static boolean create(CMapEntity[] entities) {
+    public static boolean create(CMapEntity[] entities, HashMap<String, CMapEntity[]> relations) {
         String vmapTemplate = new String(FileUtil.readFully(new File("templates/vmap.template")));
-        vmapTemplate = vmapTemplate.replace(CMAP_WORLD_CHILDREN, buildEntities(entities));
+        vmapTemplate = vmapTemplate.replace(CMAP_WORLD_CHILDREN, buildEntities(entities, relations));
         return FileUtil.writeFully(new File("out.vmap"), vmapTemplate.getBytes());
     }
 
-    private static String buildEntities(CMapEntity[] entities) {
+    // TO-DO: Implement recursive relations.
+    private static String buildEntities(CMapEntity[] entities, HashMap<String, CMapEntity[]> relations) {
         String vmapChildTemplate = new String(FileUtil.readFully(new File("templates/vmap_child.template")));
         StringBuilder builder = new StringBuilder();
         for(CMapEntity entity : entities){
             if(entity == null){continue;}
+            String[] modelParts = entity.vmdlModel.split("/");
+            String relationName = modelParts[modelParts.length-1].split("\\.")[0];
+            System.out.print("Checking relation for: " + relationName + " ");
+            entity.children = relations.get(relationName);
+            if(entity.children == null){
+                System.out.println("None found.");
+            }else{
+                System.out.println("found " + entity.children.length + " relations.");
+            }
             builder.append(entity.toString(vmapChildTemplate));
             builder.append(",");
         }
@@ -54,10 +65,11 @@ public class VmapConverter {
     }
 
     // ModelFile;PositionX;PositionY;PositionZ;RotationX;RotationY;RotationZ;RotationW;ScaleFactor;ModelId;Type;FileDataID
-    public static CMapEntity[] processCsv(File file) {
+    public static boolean processCsv(HashMap<String, CMapEntity[]> relations, File file) {
         if(!file.getName().contains("ModelPlacementInformation")){
-            return null;
+            return false;
         }
+        String parentFile = file.getName().replace("_ModelPlacementInformation.csv", "");
         String raw = new String(FileUtil.readFully(file));
         String[] lines = raw.split("\n");
         CMapEntity[] entities = new CMapEntity[lines.length];
@@ -73,7 +85,9 @@ public class VmapConverter {
             parts = parts[0].split(Pattern.quote("\\"));
             entities[i] = new CMapEntity(xPos,yPos,zPos,xRot,yRot,zRot,scale,scale,scale,"prop_static","models/"+parts[parts.length-1].split("\\.")[0] + ".vmdl",null);
         }
-        return entities;
+        System.out.println("Created new relation: " + parentFile);
+        relations.put(parentFile, entities);
+        return true;
     }
 
 }
