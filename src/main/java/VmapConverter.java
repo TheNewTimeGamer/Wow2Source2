@@ -1,5 +1,6 @@
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.regex.Pattern;
 
 public class VmapConverter {
 
@@ -44,7 +45,6 @@ public class VmapConverter {
         StringBuilder builder = new StringBuilder();
         for(CMapEntity entity : entities){
             if(entity == null){continue;}
-            System.out.println("Entity: " + entity.className + " " + entity.vmdlModel);
             String rawEntity = vmapChildTemplate.replace(CMAP_ENTITY_ORIGIN_X, ""+entity.xPosition);
             rawEntity = rawEntity.replace(CMAP_ENTITY_ORIGIN_Y, ""+entity.yPosition);
             rawEntity = rawEntity.replace(CMAP_ENTITY_ORIGIN_Z, ""+entity.zPosition);
@@ -63,6 +63,29 @@ public class VmapConverter {
             builder.append(",");
         }
         return builder.substring(0, builder.length()-1);
+    }
+
+    // ModelFile;PositionX;PositionY;PositionZ;RotationX;RotationY;RotationZ;RotationW;ScaleFactor;ModelId;Type;FileDataID
+    public static CMapEntity[] processCsv(File file) {
+        if(!file.getName().contains("ModelPlacementInformation")){
+            return null;
+        }
+        String raw = new String(FileUtil.readFully(file));
+        String[] lines = raw.split("\n");
+        CMapEntity[] entities = new CMapEntity[lines.length];
+        for(int i = 1; i < lines.length; i++) {
+            String[] parts = lines[i].split(";");
+            double xPos = Double.parseDouble(parts[1]);
+            double yPos = Double.parseDouble(parts[2]);
+            double zPos = Double.parseDouble(parts[3]);
+            double xRot = Double.parseDouble(parts[4]);
+            double yRot = Double.parseDouble(parts[5]);
+            double zRot = Double.parseDouble(parts[6]);
+            double scale = Double.parseDouble(parts[8]);
+            parts = parts[0].split(Pattern.quote("\\"));
+            entities[i] = new CMapEntity(xPos,yPos,zPos,xRot,yRot,zRot,scale,scale,scale,"prop_static","models/"+parts[parts.length-1].split("\\.")[0] + ".vmdl");
+        }
+        return entities;
     }
 
 }

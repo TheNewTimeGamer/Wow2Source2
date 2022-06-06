@@ -1,5 +1,7 @@
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class Wow2Source2 {
@@ -12,17 +14,7 @@ public class Wow2Source2 {
     public static ArrayList<File> fileIndex = new ArrayList<File>();
 
     public static void main(String[] args) {
-        buildVmap();
-    }
-
-    public static void buildVmap() {
-        System.out.println("Building Vmap..");
-        CMapEntity[] entities = new CMapEntity[3];
-        entities[0] = new CMapEntity(0,0,0,0,0,0,1,1,1,"prop_static","models/7fk_darkmoon_forsakendrumset01.vmdl");
-        entities[1] = new CMapEntity(64,0,0,0,0,0,1,1,1,"prop_static","models/7fk_darkmoon_forsakendrumset01.vmdl");
-        entities[2] = new CMapEntity(128,0,0,0,0,0,1,1,1,"prop_static","models/7fk_darkmoon_forsakendrumset01.vmdl");
-        VmapConverter.create(entities);
-        System.out.println("Done!");
+        buildProject();
     }
 
     public static void buildProject() {
@@ -32,6 +24,8 @@ public class Wow2Source2 {
 
         System.out.print("Building file index.. ");
         System.out.println(FileUtil.buildIndex(fileIndex, WowResourcesRoot) + " entries.");
+
+        ArrayList<CMapEntity> entityBuffer = new ArrayList<CMapEntity>();
 
         for(File file : fileIndex) {
             final String fileExtension = file.getName().split("\\.")[1].toLowerCase();
@@ -49,7 +43,24 @@ public class Wow2Source2 {
                     System.out.print("Patching obj file.. " + file.getName() + " .. ");
                     System.out.println(VmdlConverter.objPatch(file) ? "Success!" : "Skipped!");
                     break;
+                case "csv":
+                    System.out.print("Processing csv: " + file.getName() + " .. ");
+                    CMapEntity[] lEntities = VmapConverter.processCsv(file);
+                    entityBuffer.addAll(Arrays.stream(lEntities).toList());
+                    System.out.println(lEntities.length + " entities found.");
+                    break;
             }
+        }
+        CMapEntity[] entities = entityBuffer.toArray(new CMapEntity[0]);
+        System.out.println("Processing entities " + entities.length + ": ");
+        for(CMapEntity entity : entities) {
+            if(entity == null){continue;}
+            System.out.println(" - " + entity.className + " " + entity.vmdlModel);
+        }
+        if(VmapConverter.create(entities)){
+            System.out.println("Done!");
+        }else{
+            System.out.println("Failed!");
         }
     }
 

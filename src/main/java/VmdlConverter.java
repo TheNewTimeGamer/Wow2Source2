@@ -11,17 +11,20 @@ public class VmdlConverter {
 
     public static boolean convert(File file, boolean mapOverride) {
         String filePath = file.getAbsolutePath().split(Wow2Source2.Source2ProjectName)[1].replace("\\", "/");
+        String overridePath = "";
         if(filePath.contains("/maps/")){
             if(!mapOverride){
                 System.out.print("map file -> use import .. ");
                 return false;
             }
             System.out.print("map file -> override active .. ");
+            overridePath = "maps/" + file.getParentFile().getName() + "/";
+            new File(Wow2Source2.Source2ProjectRoot + "/models/" + overridePath).mkdirs();
         }
         filePath = filePath.substring(1);
         String template = new String(FileUtil.readFully("templates/vmdl.template"));
         template = template.replace(MESH_FILENAME, filePath);
-        return FileUtil.writeFully(Wow2Source2.Source2ProjectRoot + "/models/" + file.getName().split("\\.")[0] + ".vmdl", template.getBytes());
+        return FileUtil.writeFully(Wow2Source2.Source2ProjectRoot + "/models/" + overridePath + file.getName().split("\\.")[0] + ".vmdl", template.getBytes());
     }
 
     public static boolean objPatch(File file) {
