@@ -7,9 +7,9 @@ import java.util.Locale;
 
 public class Wow2Source2 {
 
-    public static String WowResourcesRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/limit_break/wowresources";
-    public static String Source2ProjectRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/limit_break";
-    public static String MapRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/limit_break/models/maps/darkmoonfaire";
+    public static String WowResourcesRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/Wow2Source2/wowresources";
+    public static String Source2ProjectRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/Wow2Source2";
+    public static String MapRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/Wow2Source2/models/maps/kalimdor";
 
     public static String Source2ProjectName;
 
@@ -80,7 +80,7 @@ public class Wow2Source2 {
             String path = mapRoot.getPath() + "/" + files[i].getName();
             path = path.split(Source2ProjectName)[1].replace("\\", "/").substring(1);
             System.out.println(" - " + path);
-            entityBuffer.add(new CMapEntity(0,0,0,0,0,0,1,1,1,"prop_static",path,null));
+            entityBuffer.add(new CMapEntity(0,0,0,0,-90,0,1,1,1,"prop_static",path,null));
         }
     }
 

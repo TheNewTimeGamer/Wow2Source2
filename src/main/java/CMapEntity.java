@@ -25,7 +25,7 @@ public class CMapEntity {
         rawEntity = rawEntity.replace(VmapConverter.CMAP_ENTITY_ORIGIN_Z, ""+this.zPosition);
 
         rawEntity = rawEntity.replace(VmapConverter.CMAP_ENTITY_ANGLE_X, ""+this.xAngle);
-        rawEntity = rawEntity.replace(VmapConverter.CMAP_ENTITY_ANGLE_Y, ""+this.yAngle);
+        rawEntity = rawEntity.replace(VmapConverter.CMAP_ENTITY_ANGLE_Y, ""+(this.yAngle-90));
         rawEntity = rawEntity.replace(VmapConverter.CMAP_ENTITY_ANGLE_Z, ""+this.zAngle);
 
         rawEntity = rawEntity.replace(VmapConverter.CMAP_ENTITY_SCALE_X, ""+this.xScale);
