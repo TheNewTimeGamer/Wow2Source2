@@ -7,9 +7,11 @@ import java.util.Locale;
 
 public class Wow2Source2 {
 
-    public static String WowResourcesRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/Wow2Source2/wowresources";
-    public static String Source2ProjectRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/Wow2Source2";
-    public static String MapRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/Wow2Source2/models/maps/kalimdor";
+    public static String ProjectName = "Clean";
+
+    public static String WowResourcesRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/" + ProjectName + "/wowresources";
+    public static String Source2ProjectRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/" + ProjectName;
+    public static String MapRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/" + ProjectName + "/models/maps/kalimdor";
 
     public static String Source2ProjectName;
 

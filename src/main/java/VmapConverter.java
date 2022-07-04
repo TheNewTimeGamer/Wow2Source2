@@ -37,6 +37,9 @@ public class VmapConverter {
     public static final String CMAP_ENTITY_CLASS_NAME = "$CLASS_NAME";
     public static final String CMAP_ENTITY_VMDL_MODEL = "$VMDL_MODEL";
 
+    public static final int X_OFFSET = -17069;
+    public static final int Z_OFFSET = -17069;
+
     public static boolean create(CMapEntity[] entities, HashMap<String, CMapEntity[]> relations) {
         String vmapTemplate = new String(FileUtil.readFully(new File("templates/vmap.template")));
         vmapTemplate = vmapTemplate.replace(CMAP_WORLD_CHILDREN, buildEntities(entities, relations));
@@ -58,7 +61,7 @@ public class VmapConverter {
             }else{
                 System.out.println("found " + entity.children.length + " relations.");
             }
-            builder.append(entity.toString(vmapChildTemplate));
+            builder.append(entity.toString(vmapChildTemplate, true));
             builder.append(",");
         }
         return builder.substring(0, builder.length()-1);
@@ -75,9 +78,9 @@ public class VmapConverter {
         CMapEntity[] entities = new CMapEntity[lines.length];
         for(int i = 1; i < lines.length; i++) {
             String[] parts = lines[i].split(";");
-            double xPos = Double.parseDouble(parts[1]);
+            double xPos = Double.parseDouble(parts[1]) + X_OFFSET;
             double yPos = Double.parseDouble(parts[2]);
-            double zPos = Double.parseDouble(parts[3]);
+            double zPos = Double.parseDouble(parts[3]) + Z_OFFSET;
             double xRot = Double.parseDouble(parts[4]);
             double yRot = Double.parseDouble(parts[5]);
             double zRot = Double.parseDouble(parts[6]);
