@@ -63,4 +63,24 @@ public class FileUtil {
         return count;
     }
 
+    public static String getType(File file) {
+        String[] parts = file.getName().split("\\.");
+        if(parts.length <= 1) {
+            return null;
+        }
+        return parts[parts.length-1];
+    }
+
+    public static String getNameWithoutType(File file) {
+        String[] parts = file.getName().split("\\.");
+        if(parts.length <= 1) {
+            return parts[0];
+        }
+        StringBuilder builder = new StringBuilder();
+        for(int i = 0; i < parts.length-1; i++) {
+            builder.append(parts[i]);
+        }
+        return builder.toString();
+    }
+
 }

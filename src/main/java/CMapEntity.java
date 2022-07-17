@@ -1,4 +1,8 @@
+import java.io.File;
+
 public class CMapEntity {
+
+    public static final String CMAP_GROUP_CHILDREN = "$CMAP_GROUP_CHILDREN";
 
     public final double xPosition, yPosition, zPosition;
     public final double xAngle, yAngle, zAngle;
@@ -19,7 +23,7 @@ public class CMapEntity {
         this.className = className; this.vmdlModel = vmdlModel; this.children = children;
     }
 
-    public String toString(String template, boolean asGroup){
+    public String toString(String template, boolean asGroup, boolean processChildren){
         String rawEntity = template.replace(VmapConverter.CMAP_ENTITY_ORIGIN_X, ""+this.xPosition);
         rawEntity = rawEntity.replace(VmapConverter.CMAP_ENTITY_ORIGIN_Y, ""+this.yPosition);
         rawEntity = rawEntity.replace(VmapConverter.CMAP_ENTITY_ORIGIN_Z, ""+this.zPosition);
@@ -35,43 +39,24 @@ public class CMapEntity {
         rawEntity = rawEntity.replace(VmapConverter.CMAP_ENTITY_CLASS_NAME, ""+this.className);
         rawEntity = rawEntity.replace(VmapConverter.CMAP_ENTITY_VMDL_MODEL, ""+this.vmdlModel);
 
-        if(this.children != null) {
+        if(this.children != null && processChildren) {
             StringBuilder rawChildren = new StringBuilder();
             for (CMapEntity entity : this.children) {
                 if (entity == null) {
                     continue;
                 }
-                rawChildren.append(entity.toString(template, false));
-                rawChildren.append(",");
+                rawChildren.append(entity.toString(template, false, true));
             }
             if(!asGroup) {
-                rawEntity = rawEntity.replace(VmapConverter.CMAP_ENTITY_CHILDREN, rawChildren.substring(0, rawChildren.length() - 1));
+                rawEntity = rawEntity.replace(VmapConverter.CMAP_ENTITY_CHILDREN, rawChildren);
                 return rawEntity;
             }
+            String groupTemplate = new String(FileUtil.readFully("templates/cmap_group.template"));
             rawEntity = rawEntity.replace("\n\t\t\t", "\n\t\t\t\t\t");
-            rawEntity = "\"CMapGroup\"\n" +
-                        "\t\t\t{\n" +
-                        "\t\t\t\t\"id\" \"elementid\" \"5ee2e7dc-c410-4112-85be-7d8d97a6226d\"\n" +
-                        "\t\t\t\t\"origin\" \"vector3\" \"0 0 0\"\n" +
-                        "\t\t\t\t\"angles\" \"qangle\" \"0 0 0\"\n" +
-                        "\t\t\t\t\"scales\" \"vector3\" \"1 1 1\"\n" +
-                        "\t\t\t\t\"nodeID\" \"int\" \"7\"\n" +
-                        "\t\t\t\t\"referenceID\" \"uint64\" \"0x5f05a986f7b04310\"\n" +
-                        "\t\t\t\t\"children\" \"element_array\" \n" +
-                        "\t\t\t\t[\n" +
-                        "\t\t\t\t\t" + rawEntity + ",\n\t\t\t\t\t";
-            rawEntity = rawEntity + rawChildren.substring(0, rawChildren.length() - 1).replace("\n\t\t\t", "\n\t\t\t\t\t");
-            String footer = "\n\t\t\t\t\"editorOnly\" \"bool\" \"0\"\n" +
-                    "\t\t\t\t\"force_hidden\" \"bool\" \"0\"\n" +
-                    "\t\t\t\t\"transformLocked\" \"bool\" \"0\"\n" +
-                    "\t\t\t\t\"variableTargetKeys\" \"string_array\" \n" +
-                    "\t\t\t\t[\n" +
-                    "\t\t\t\t]\n" +
-                    "\t\t\t\t\"variableNames\" \"string_array\" \n" +
-                    "\t\t\t\t[\n" +
-                    "\t\t\t\t]";
-            rawEntity = rawEntity + "\n\t\t\t\t]" + footer + "\n\t\t\t}";
+            rawEntity = rawEntity + "," + rawChildren.toString().replace("\n\t\t\t", "\n\t\t\t\t\t");
+            rawEntity = groupTemplate.replace(CMAP_GROUP_CHILDREN, rawEntity);
         }
+
         rawEntity = rawEntity.replace(VmapConverter.CMAP_ENTITY_CHILDREN, "");
         return rawEntity;
     }

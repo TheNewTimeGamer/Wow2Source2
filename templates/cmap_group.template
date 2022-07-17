@@ -1,0 +1,22 @@
+"CMapGroup"
+			{
+				"id" "elementid" "5ee2e7dc-c410-4112-85be-7d8d97a6226d"
+				"origin" "vector3" "0 0 0"
+				"angles" "qangle" "0 0 0"
+				"scales" "vector3" "1 1 1"
+				"nodeID" "int" "7"
+				"referenceID" "uint64" "0x5f05a986f7b04310"
+				"children" "element_array"
+				[
+				    $CMAP_GROUP_CHILDREN
+				]
+                "editorOnly" "bool" "0"
+                "force_hidden" "bool" "0"
+                "transformLocked" "bool" "0"
+                "variableTargetKeys" "string_array"
+                [
+                ]
+                "variableNames" "string_array"
+                [
+                ]
+            }

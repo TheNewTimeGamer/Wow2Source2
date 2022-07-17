@@ -7,15 +7,18 @@ import java.util.Locale;
 
 public class Wow2Source2 {
 
-    public static String ProjectName = "Clean";
+    public static String ProjectName = "sneaky";
+    public static String MapName = "2444";
 
     public static String WowResourcesRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/" + ProjectName + "/wowresources";
     public static String Source2ProjectRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/" + ProjectName;
-    public static String MapRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/" + ProjectName + "/models/maps/kalimdor";
+    public static String MapRoot = "D:/SteamLibrary/steamapps/common/Half-Life Alyx/content/hlvr_addons/" + ProjectName + "/models/maps/" + MapName;
 
     public static String Source2ProjectName;
 
     public static ArrayList<File> fileIndex = new ArrayList<File>();
+
+    public static boolean skipProcessing = true;
 
     public static void main(String[] args) {
         buildProject();
@@ -39,19 +42,13 @@ public class Wow2Source2 {
                 case "tga":
                 case "jpg":
                 case "jpeg":
-                    System.out.print("Converting to vmat: " + file.getName() + " .. ");
-                    System.out.println(VmatConverter.convert(file) ? "Success!" : "Failed!");
+                    processVmat(file);
                     break;
                 case "obj":
-                    System.out.print("Converting to vmdl: " + file.getName() + " .. ");
-                    System.out.println(VmdlConverter.convert(file, true) ? "Success!" : "Failed!");
-                    System.out.print("Patching obj file.. " + file.getName() + " .. ");
-                    System.out.println(VmdlConverter.objPatch(file) ? "Success!" : "Skipped!");
+                    processObj(file);
                     break;
                 case "csv":
-                    System.out.println("Processing csv: " + file.getName() + " .. ");
-                    VmapConverter.processCsv(relations, file);
-                    System.out.println(relations.size() + " entity relations found.");
+                    processCsv(file, relations);
                     break;
             }
         }
@@ -73,14 +70,34 @@ public class Wow2Source2 {
         }
     }
 
+    public static void processVmat(File file) {
+        if(skipProcessing){return;}
+        System.out.print("Converting to vmat: " + file.getName() + " .. ");
+        System.out.println(VmatConverter.convert(file) ? "Success!" : "Failed!");
+    }
+
+    public static void processObj(File file){
+        if(skipProcessing){return;}
+        System.out.print("Converting to vmdl: " + file.getName() + " .. ");
+        System.out.println(VmdlConverter.convert(file, true) ? "Success!" : "Failed!");
+        System.out.print("Patching obj file.. " + file.getName() + " .. ");
+        System.out.println(VmdlConverter.objPatch(file) ? "Success!" : "Skipped!");
+    }
+
+    public static void processCsv(File file, HashMap<String, CMapEntity[]> relations){
+        System.out.println("Processing csv: " + file.getName() + " .. ");
+        VmapConverter.processCsv(relations, file);
+        System.out.println(relations.size() + " entity relations found.");
+    }
+
     public static void addMapTiles(ArrayList<CMapEntity> entityBuffer, File mapRoot) {
         File[] files = mapRoot.listFiles();
         for(int i = 0; i < files.length; i++){
             if(files[i] == null || !files[i].isFile()) {
                 continue;
             }
-            String path = mapRoot.getPath() + "/" + files[i].getName();
-            path = path.split(Source2ProjectName)[1].replace("\\", "/").substring(1);
+            String path = mapRoot.getPath().split(Source2ProjectName)[1].replace("\\", "/").substring(1);
+            path = path + "/" + files[i].getName();
             System.out.println(" - " + path);
             entityBuffer.add(new CMapEntity(0,0,0,0,-90,0,1,1,1,"prop_static",path,null));
         }

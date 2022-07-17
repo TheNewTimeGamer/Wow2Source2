@@ -10,9 +10,10 @@ public class VmdlConverter {
     }
 
     public static boolean convert(File file, boolean mapOverride) {
-        String filePath = file.getAbsolutePath().split(Wow2Source2.Source2ProjectName)[1].replace("\\", "/");
+        String filePath = file.getPath().split(Wow2Source2.ProjectName)[1].replace("\\", "/");
+        System.out.print(" File Path: " + filePath + " .. ");
         String overridePath = "";
-        if(filePath.contains("/maps/")){
+        if(filePath.contains("maps")){
             if(!mapOverride){
                 System.out.print("map file -> use import .. ");
                 return false;

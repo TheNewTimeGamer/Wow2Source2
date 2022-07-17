@@ -43,6 +43,7 @@ public class VmapConverter {
     public static boolean create(CMapEntity[] entities, HashMap<String, CMapEntity[]> relations) {
         String vmapTemplate = new String(FileUtil.readFully(new File("templates/vmap.template")));
         vmapTemplate = vmapTemplate.replace(CMAP_WORLD_CHILDREN, buildEntities(entities, relations));
+        vmapTemplate = vmapTemplate.replace("}\"CMapEntity\"", "},\"CMapEntity\"");
         return FileUtil.writeFully(new File("out.vmap"), vmapTemplate.getBytes());
     }
 
@@ -50,21 +51,38 @@ public class VmapConverter {
     private static String buildEntities(CMapEntity[] entities, HashMap<String, CMapEntity[]> relations) {
         String vmapChildTemplate = new String(FileUtil.readFully(new File("templates/vmap_child.template")));
         StringBuilder builder = new StringBuilder();
+        System.out.println("Checking relations: ");
         for(CMapEntity entity : entities){
             if(entity == null){continue;}
-            String[] modelParts = entity.vmdlModel.split("/");
-            String relationName = modelParts[modelParts.length-1].split("\\.")[0];
-            System.out.print("Checking relation for: " + relationName + " ");
-            entity.children = relations.get(relationName);
-            if(entity.children == null){
-                System.out.println("None found.");
-            }else{
-                System.out.println("found " + entity.children.length + " relations.");
-            }
-            builder.append(entity.toString(vmapChildTemplate, true));
+            checkRelations(entity, relations, 0, 0);
+            builder.append(entity.toString(vmapChildTemplate, true, true));
             builder.append(",");
         }
         return builder.substring(0, builder.length()-1);
+    }
+
+    public static int checkRelations(CMapEntity entity, HashMap<String, CMapEntity[]> relations, int count, int depth) {
+        String[] modelParts = entity.vmdlModel.split("/");
+        String relationName = modelParts[modelParts.length-1].split("\\.")[0];
+        entity.children = relations.get(relationName);
+        String indentation = "";
+        for(int i = 0; i < depth; i++) {
+            indentation = indentation + '\t';
+        }
+        if(entity.children != null){
+            System.out.println(indentation + relationName + " { ");
+            count += entity.children.length;
+            for(CMapEntity child : entity.children) {
+                if(child == null){continue;}
+                checkRelations(child, relations, count, depth+1);
+            }
+            System.out.println(indentation + "}");
+        }else{
+            if(depth > 0){
+                System.out.println(indentation + relationName + "{}");
+            }
+        }
+        return count;
     }
 
     // ModelFile;PositionX;PositionY;PositionZ;RotationX;RotationY;RotationZ;RotationW;ScaleFactor;ModelId;Type;FileDataID

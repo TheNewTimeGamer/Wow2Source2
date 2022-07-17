@@ -18,36 +18,35 @@ public class VmatConverter {
     }
 
     public static boolean convert(File file) {
+        if(file.getName().contains("_trans.")){
+            System.out.println("Trans map .. Skipped!");
+            return false;
+        }
         boolean hasTransMap = generateTransMap(file);
         System.out.print(hasTransMap + " .. ");
-        String filePath = file.getAbsolutePath().split(Wow2Source2.Source2ProjectName)[1].replace("\\", "/");
-        filePath = filePath.substring(1);
-        String fileName = file.getName();
+        String fileName = FileUtil.getNameWithoutType(file);
         String template = new String(FileUtil.readFully("templates/vmat_complex.template"));
-        template = template.replace(TEXTURE_COLOR_VALUE, filePath);
+        template = template.replace(TEXTURE_COLOR_VALUE, file.getPath());
         if(hasTransMap) {
-            String fileType = filePath.split("\\.")[1];
-            String transFileName = filePath.split("\\.")[0] + "_trans." + fileType;
+            String fileType = FileUtil.getType(file);
+            String transFileName = fileName + "_trans." + fileType;
+            String transFilePath = file.getPath().replace(file.getName(), transFileName);
             template = template.replace(TEXTURE_FLAG_TRANS, "1");
-            template = template.replace(TEXTURE_TRANS_VALUE, transFileName);
+            template = template.replace(TEXTURE_TRANS_VALUE, transFilePath);
+            System.out.println("TransFilePath: " + transFilePath);
         }else{
             template = template.replace(TEXTURE_FLAG_TRANS, "0");
             template = template.replace(TEXTURE_TRANS_VALUE, "");
         }
-        return FileUtil.writeFully(Wow2Source2.Source2ProjectRoot + "/materials/mat_" + fileName.split("\\.")[0] + ".vmat", template.getBytes());
+        return FileUtil.writeFully(Wow2Source2.Source2ProjectRoot + "/materials/mat_" + fileName + ".vmat", template.getBytes());
     }
 
     public static boolean generateTransMap(File file) {
-        System.out.print("Transmap ");
+        System.out.print("Transmap .. ");
         boolean hasTransMap = false;
         int lowest = Integer.MAX_VALUE;
         try {
             BufferedImage texture = ImageIO.read(file);
-            System.out.print("type -> " + texture.getType() + " .. ");
-            if(texture.getColorModel().getTransparency() == Transparency.OPAQUE){
-                System.out.print(" OPAQUE .. ");
-                return false;
-            }
             for(int y = 0; y < texture.getHeight(); y++){
                 for(int x = 0; x < texture.getWidth(); x++){
                     int alpha = new Color(texture.getRGB(x,y), true).getAlpha();
@@ -62,7 +61,7 @@ public class VmatConverter {
                     }
                 }
             }
-            System.out.print(lowest + " ..");
+            System.out.print(lowest + " .. ");
             if(hasTransMap) {
                 String fileType = file.getName().split("\\.")[1];
                 File transFile = new File(file.getPath().replace("." + fileType, "_trans." + fileType));
